@@ -1,0 +1,16 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "ServerMonitoring.Data Class Library",
+  "authors": [ "ZOXEXIVO" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "frameworks": {
+    "dnxcore50": { }
+  },
+  "dependencies": {
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
+    "System.Linq": "4.0.1-beta-23516",
+    "System.Threading.Tasks": "4.0.11-beta-23516"
+  }
+}

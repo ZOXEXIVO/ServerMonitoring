@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>Server Monitoring Integration</h2>
+
+<div class="well" style="font-size: 17px;">
+    &lt;script src=&quot;@(ViewBag.CurrentUrl)js/dist/kladr.min.js&quot;&gt;&lt;/script&gt; <br /><br />
+
+    &lt;kladr-selector host=&quot;@ViewBag.CurrentUrl&quot; ng-model=&quot;model&quot; show-labels=&quot;1&quot; &gt;&lt;/kladr-selector&gt;
+</div>
+
+<script src="~/js/dist/kladr.min.js"></script>
+
+<kladr-selector host="@(ViewBag.CurrentUrl)" ng-model="model"></kladr-selector>
