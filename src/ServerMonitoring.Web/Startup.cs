@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ServerMonitoring.Web.Application.Formatters;
 
 namespace ServerMonitoring.Web
 {
@@ -21,7 +23,18 @@ namespace ServerMonitoring.Web
      
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                var jsonFormatter = new JsonFormatter();
+
+                options.InputFormatters.Clear();
+                options.InputFormatters.RemoveType<JsonInputFormatter>();
+                options.InputFormatters.Add(jsonFormatter);
+
+                options.OutputFormatters.Clear();
+                options.OutputFormatters.RemoveType<JsonOutputFormatter>();
+                options.OutputFormatters.Add(jsonFormatter);
+            });
         }
      
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -29,6 +42,8 @@ namespace ServerMonitoring.Web
             app.UseIISPlatformHandler();
 
             app.UseStaticFiles();
+
+            app.UseCors();
 
             app.UseMvc(routes =>
             {

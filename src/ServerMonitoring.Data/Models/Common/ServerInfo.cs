@@ -16,5 +16,10 @@
         /// Is server active
         /// </summary>
         public bool IsActive { get; set; }
+
+        public override int GetHashCode()
+        {
+            return MachineName.GetHashCode() ^ IP.GetHashCode();
+        }
     }
 }

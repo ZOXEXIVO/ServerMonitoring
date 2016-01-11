@@ -8,7 +8,7 @@ namespace ServerMonitoring.Data
     {
         public static void RegisterDataServices(this IServiceCollection services)
         {
-            services.AddTransient(typeof (IMonitoringStorage), typeof (InMemoryMonitoringStorage));
+            services.AddSingleton(typeof (IMonitoringStorage), typeof (InMemoryMonitoringStorage));
         }
     }
 }

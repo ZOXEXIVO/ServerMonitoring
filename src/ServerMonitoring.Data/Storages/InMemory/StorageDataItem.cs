@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using ServerMonitoring.Data.Enums;
 
-namespace ServerMonitoring.Data.Models.Common
+namespace ServerMonitoring.Data.Storages.InMemory
 {
-    public class ServerStatisticsDataItem
+    public class StorageDataItem
     {
-        public ServerStatisticsDataItem()
-        {
-            Data = new List<double>();
-        }
-
         /// <summary>
         /// Name of item (CPU_1, DISK_READ e.t.c)
         /// </summary>
@@ -18,12 +13,12 @@ namespace ServerMonitoring.Data.Models.Common
         /// <summary>
         /// Current value (40.0 - CPU load 40%, DISK read % e.t.c)
         /// </summary>
-        public double CurrentValue { get; set; }
+        public double Value { get; set; }
 
         /// <summary>
         /// Current value dimension (%, KB, B e.t.c)
         /// </summary>
-        public string CurrentValueDisplay { get; set; }
+        public string Display { get; set; }
 
         /// <summary>
         /// Type of element for grouping
@@ -31,8 +26,8 @@ namespace ServerMonitoring.Data.Models.Common
         public ServerStatisticsType Type { get; set; }
 
         /// <summary>
-        /// Data for last 
+        /// Data for item
         /// </summary>
-        public List<double> Data { get; set; }
+        public DateTime UtcDate { get; set; }
     }
 }

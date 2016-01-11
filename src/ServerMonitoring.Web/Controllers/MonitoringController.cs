@@ -3,6 +3,7 @@ using Microsoft.AspNet.Mvc;
 using ServerMonitoring.Data.Models;
 using ServerMonitoring.Data.Models.Query;
 using ServerMonitoring.Data.Storages;
+using ServerMonitoring.Web.Application.Formatters.Bindings;
 
 namespace ServerMonitoring.Web.Controllers
 {
@@ -15,13 +16,22 @@ namespace ServerMonitoring.Web.Controllers
             _monitoringStorage = monitoringStorage;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetServers()
+        {
+            var result = await _monitoringStorage.GetServersAsync();
+            return Ok(result);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Push(ServerPushData data)
         {
             await _monitoringStorage.PushAsync(data);
             return Ok();
         }
 
-        public async Task<IActionResult> Pull(MonitoringQuery query)
+        [HttpGet]
+        public async Task<IActionResult> Pull([FromJsonUri]MonitoringQuery query)
         {
             var result = await _monitoringStorage.PullAsync(query);
             return Ok(result);

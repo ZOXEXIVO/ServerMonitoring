@@ -12,7 +12,7 @@ namespace ServerMonitoring.Data.Storages
         /// Update monitoring info from server
         /// </summary>
         /// <returns></returns>
-        Task<List<ServerInfo>> GetServers();
+        Task<List<ServerInfo>> GetServersAsync();
 
         /// <summary>
         /// Update monitoring info from server
