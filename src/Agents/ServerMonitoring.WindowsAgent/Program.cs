@@ -16,7 +16,7 @@ namespace ServerMonitoring.WindowsAgent
 
             var serverInfo = application.GetServerInfo();
 
-            Console.Title = string.Format("{0} - {1}", serverInfo.MachineName, serverInfo.IP);
+            Console.Title = string.Format("{0} - {1}", serverInfo.MachineName, String.Join(", ", serverInfo.IPs));
 
             while (true)
             {

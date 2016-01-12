@@ -1,7 +1,14 @@
-﻿namespace ServerMonitoring.Data.Models.Common
+﻿using System.Collections.Generic;
+
+namespace ServerMonitoring.Data.Models.Common
 {
     public class ServerInfo
     {
+        public ServerInfo()
+        {
+            IPs = new List<string>();    
+        }
+
         /// <summary>
         /// Server name
         /// </summary>
@@ -10,7 +17,7 @@
         /// <summary>
         /// Server IP
         /// </summary>
-        public string IP { get; set; }
+        public List<string> IPs { get; set; }
 
         /// <summary>
         /// Is server active
@@ -19,7 +26,7 @@
 
         public override int GetHashCode()
         {
-            return MachineName.GetHashCode() ^ IP.GetHashCode();
+            return MachineName.GetHashCode() ^ string.Join(", ", IPs).GetHashCode();
         }
     }
 }

@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Application\MonitoringApp.cs" />
     <Compile Include="Enums\ServerStatisticsType.cs" />
+    <Compile Include="Helpers\IPHelper.cs" />
     <Compile Include="Pusher\HttpPusher.cs" />
     <Compile Include="Models\ServerInfo.cs" />
     <Compile Include="Models\ServerPushData.cs" />

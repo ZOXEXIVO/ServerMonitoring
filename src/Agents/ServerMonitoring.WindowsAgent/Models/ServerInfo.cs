@@ -1,9 +1,16 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace ServerMonitoring.WindowsAgent.Models
 {
     public class ServerInfo
     {
+        public ServerInfo()
+        {
+            IPs = new List<string>();
+        }
+
         /// <summary>
         /// Server name
         /// </summary>
@@ -12,7 +19,7 @@ namespace ServerMonitoring.WindowsAgent.Models
         /// <summary>
         /// Server IP
         /// </summary>
-        public string IP { get; set; }
+        public List<string> IPs { get; set; }
 
         /// <summary>
         /// Is server active
@@ -21,7 +28,7 @@ namespace ServerMonitoring.WindowsAgent.Models
 
         public override int GetHashCode()
         {
-            return MachineName.GetHashCode() ^ IP.GetHashCode();
+            return MachineName.GetHashCode() ^ string.Join(", ", IPs).GetHashCode();
         }
 
         public override string ToString()
@@ -29,8 +36,11 @@ namespace ServerMonitoring.WindowsAgent.Models
             var builder = new StringBuilder();
 
             builder.AppendFormat("MachineName: {0}\r\n", MachineName);
-            builder.AppendFormat("IP: {0}\r\n", IP);
+            builder.AppendLine("IPs:");
 
+            foreach (var ip in IPs)
+                builder.AppendLine(ip);
+            
             return builder.ToString();
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
+using ServerMonitoring.WindowsAgent.Helpers;
 using ServerMonitoring.WindowsAgent.Models;
 using ServerMonitoring.WindowsAgent.Services;
 using ServerMonitoring.WindowsAgent.Services.CPU;
@@ -13,16 +13,19 @@ namespace ServerMonitoring.WindowsAgent.Application
 {
     public class MonitoringApp
     {
-        private readonly List<IMonitoringService> _monitoringServices = new List<IMonitoringService>();
+        private readonly List<IMonitoringService> _monitoringServices;
 
         private readonly ServerPushData _pushData;
 
         public MonitoringApp()
         {
-            _monitoringServices.Add(new CpuMonitoringService());
-            _monitoringServices.Add(new MemoryMonitoringService());
-            _monitoringServices.Add(new DiskMonitoringService());
-            _monitoringServices.Add(new NetworkMonitoringService());
+            _monitoringServices = new List<IMonitoringService>
+            {
+                new CpuMonitoringService(),
+                new MemoryMonitoringService(),
+                new DiskMonitoringService(),
+                new NetworkMonitoringService()
+            };
 
             _pushData = new ServerPushData();
 
@@ -45,12 +48,9 @@ namespace ServerMonitoring.WindowsAgent.Application
         {
             _pushData.Server = new ServerInfo
             {
-                MachineName = Environment.MachineName
+                MachineName = Environment.MachineName,
+                IPs = IPHelper.GetAllIPs()
             };
-
-            var currentIps = Dns.GetHostAddresses(Dns.GetHostName());
-
-            _pushData.Server.IP = currentIps.Any() ? currentIps.LastOrDefault().ToString() : "127.0.0.1";
         }
 
         public ServerInfo GetServerInfo()
