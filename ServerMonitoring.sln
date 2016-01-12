@@ -14,6 +14,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ServerMonitoring.Web", "src
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ServerMonitoring.Data", "src\ServerMonitoring.Data\ServerMonitoring.Data.xproj", "{FE65B601-9F8E-4AF9-A6A6-CE45DD1D1B22}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Agents", "Agents", "{570E864C-9BC4-46F4-9A50-396BC8BAFBA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerMonitoring.WindowsAgent", "Agents\ServerMonitoring.WindowsAgent\ServerMonitoring.WindowsAgent.csproj", "{BCDE6A53-CE0A-4190-8525-DC198F538C17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +32,10 @@ Global
 		{FE65B601-9F8E-4AF9-A6A6-CE45DD1D1B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE65B601-9F8E-4AF9-A6A6-CE45DD1D1B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE65B601-9F8E-4AF9-A6A6-CE45DD1D1B22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCDE6A53-CE0A-4190-8525-DC198F538C17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCDE6A53-CE0A-4190-8525-DC198F538C17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCDE6A53-CE0A-4190-8525-DC198F538C17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCDE6A53-CE0A-4190-8525-DC198F538C17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -35,5 +43,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{29FEC89F-53CA-4219-B93C-8643729FF982} = {1B2A24B9-E2CD-477E-BDA7-D0D5643F4CA3}
 		{FE65B601-9F8E-4AF9-A6A6-CE45DD1D1B22} = {1B2A24B9-E2CD-477E-BDA7-D0D5643F4CA3}
+		{570E864C-9BC4-46F4-9A50-396BC8BAFBA7} = {1B2A24B9-E2CD-477E-BDA7-D0D5643F4CA3}
+		{BCDE6A53-CE0A-4190-8525-DC198F538C17} = {570E864C-9BC4-46F4-9A50-396BC8BAFBA7}
 	EndGlobalSection
 EndGlobal

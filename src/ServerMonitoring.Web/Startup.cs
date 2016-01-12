@@ -4,6 +4,7 @@ using Microsoft.AspNet.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ServerMonitoring.Web.Application.Filters;
 using ServerMonitoring.Web.Application.Formatters;
 
 namespace ServerMonitoring.Web
@@ -34,7 +35,11 @@ namespace ServerMonitoring.Web
                 options.OutputFormatters.Clear();
                 options.OutputFormatters.RemoveType<JsonOutputFormatter>();
                 options.OutputFormatters.Add(jsonFormatter);
+
+                options.Filters.Add(new ExceptionFilter());
             });
+
+            services.RegisterInternalServices();
         }
      
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

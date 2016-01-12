@@ -24,7 +24,7 @@ namespace ServerMonitoring.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Push(ServerPushData data)
+        public async Task<IActionResult> Push([FromBody]ServerPushData data)
         {
             await _monitoringStorage.PushAsync(data);
             return Ok();

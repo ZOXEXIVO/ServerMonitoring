@@ -1,4 +1,4 @@
-﻿namespace ServerMonitoring.Data.Enums
+﻿namespace ServerMonitoring.WindowsAgent.Enums
 {
     public enum ServerStatisticsType
     {

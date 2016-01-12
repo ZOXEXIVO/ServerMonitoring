@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using ServerMonitoring.Data;
 
 namespace ServerMonitoring.Web
 {
@@ -7,7 +8,7 @@ namespace ServerMonitoring.Web
     {
         public static void RegisterInternalServices(this IServiceCollection services)
         {
-         
+            services.RegisterDataServices();
         }
        
         public static void UseCors(this IApplicationBuilder app)

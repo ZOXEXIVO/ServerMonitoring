@@ -30,7 +30,11 @@ namespace ServerMonitoring.Data.Storages.InMemory
             if (data == null)
                 return;
 
-            var serverData = _serversData.GetOrAdd(data.Server.GetHashCode(), hash => new InMemoryServerData());
+            var serverHash = data.Server.GetHashCode();
+
+            _servers.AddOrUpdate(serverHash, i => data.Server, (i, u) => data.Server);
+
+            var serverData = _serversData.GetOrAdd(serverHash, hash => new InMemoryServerData());
 
             await serverData.InternalPush(data.Items);
         }
