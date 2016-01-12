@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Http.Extensions;
+using Microsoft.AspNet.Mvc;
 
 namespace ServerMonitoring.Web.Controllers
 {
@@ -6,6 +7,8 @@ namespace ServerMonitoring.Web.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.CurrentUrl = Request.GetDisplayUrl();
+
             return View();
         }
     }
