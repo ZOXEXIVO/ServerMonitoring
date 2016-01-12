@@ -46,6 +46,14 @@ namespace ServerMonitoring.Data.Storages.InMemory.Data
                 data = data.Where(x => x.Date > query.SinceByDate);
 
             return await Task.FromResult(data.Select(y => y.Value).ToList());
-        } 
+        }
+
+        public async Task<double> LastValue()
+        {
+            if (!_monitoringData.Any())
+                return 0.0;
+
+            return await Task.FromResult(_monitoringData.LastOrDefault().Value);
+        }
     }
 }

@@ -46,9 +46,9 @@ namespace ServerMonitoring.Web
         {
             app.UseIISPlatformHandler();
 
-            app.UseStaticFiles();
-
             app.UseCors();
+
+            app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {

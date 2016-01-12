@@ -51,6 +51,7 @@ namespace ServerMonitoring.Data.Storages.InMemory
                 var item = new ServerStatisticsDataItem
                 {
                     Name = sData.Key,
+                    CurrentValue = await sData.Value.LastValue(),
                     CurrentValueDisplay = sData.Value.Display,
                     Type = sData.Value.Type,
                     Data = await sData.Value.FilterData(query)

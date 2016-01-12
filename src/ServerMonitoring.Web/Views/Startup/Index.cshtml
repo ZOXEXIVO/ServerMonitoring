@@ -5,11 +5,15 @@
 <h2>Windows Server Monitoring Integration</h2>
 
 <div class="well" style="font-size: 17px;">
-    &lt;script src=&quot;@(ViewBag.CurrentUrl)js/app/monitoring.min.js&quot;&gt;&lt;/script&gt; <br /><br />
+    &lt;script src=&quot;@(ViewBag.CurrentUrl)js/monitoring.min.js&quot;&gt;&lt;/script&gt; <br /><br />
 
     &lt;server-monitoring host=&quot;@ViewBag.CurrentUrl&quot; &gt;&lt;/server-monitoring&gt;
 </div>
 
-<script src="~/js/app/monitoring.min.js"></script>
+<script src="~/js/monitoring.min.js"></script>
 
-<kladr-selector host="@(ViewBag.CurrentUrl)" ng-model="model"></kladr-selector>
+<script>
+    var monitoringApp = angular.module('monitoring', ['serverMonitoring'])
+</script>
+
+<server-monitoring host="@(ViewBag.CurrentUrl)"></server-monitoring>
