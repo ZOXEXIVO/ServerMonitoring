@@ -11,7 +11,7 @@ namespace ServerMonitoring.WindowsAgent.Pusher
     {
         public static void Push(ServerPushData data)
         {
-            var request = (HttpWebRequest)WebRequest.Create("http://localhost:5000/monitoring/push");
+            var request = (HttpWebRequest)WebRequest.Create("http://wsmonitoring.azurewebsites.net/monitoring/push");
 
             request.Method = "POST";
             request.ContentType = "application/json; charset=UTF-8";
