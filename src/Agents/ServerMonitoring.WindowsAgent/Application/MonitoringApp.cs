@@ -53,6 +53,11 @@ namespace ServerMonitoring.WindowsAgent.Application
             _pushData.Server.IP = currentIps.Any() ? currentIps.LastOrDefault().ToString() : "127.0.0.1";
         }
 
+        public ServerInfo GetServerInfo()
+        {
+            return _pushData.Server;
+        }
+
         public ServerPushData GetDataToPush()
         {
             _pushData.Items = _monitoringServices.SelectMany(x => x.GetData()).ToList();

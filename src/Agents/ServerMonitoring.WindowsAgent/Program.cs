@@ -14,17 +14,23 @@ namespace ServerMonitoring.WindowsAgent
 
             application.Start();
 
+            var serverInfo = application.GetServerInfo();
+
+            Console.Title = string.Format("{0} - {1}", serverInfo.MachineName, serverInfo.IP);
+
             while (true)
             {
                 var pushData = application.GetDataToPush();
 
                 try
                 {
+                    Console.Write("pushing... ");
                     HttpPusher.Push(pushData);
                     Console.WriteLine("ok");
                 }
                 catch (WebException ex)
                 {
+                    Console.WriteLine("error");
                     Console.WriteLine(ex.Message);
                 }
                 catch (Exception)
