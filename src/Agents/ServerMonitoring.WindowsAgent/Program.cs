@@ -1,8 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Threading;
-using ServerMonitoring.WindowsAgent.Application;
-using ServerMonitoring.WindowsAgent.Pusher;
+﻿using ServerMonitoring.WindowsAgent.Application;
 
 namespace ServerMonitoring.WindowsAgent
 {
@@ -10,34 +6,7 @@ namespace ServerMonitoring.WindowsAgent
     {
         static void Main(string[] args)
         {
-            var application = new MonitoringApp();
-
-            application.Start();
-
-            Console.Title = application.Server + " monitoring";
-
-            while (true)
-            {
-                var pushData = application.GetDataToPush();
-
-                try
-                {
-                    Console.Write("pushing... ");
-                    HttpPusher.Push(pushData);
-                    Console.WriteLine("ok");
-                }
-                catch (WebException ex)
-                {
-                    Console.WriteLine("error");
-                    Console.WriteLine(ex.Message);
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("error");
-                }
-
-                Thread.Sleep(1000);
-            }
+            new MonitoringApp().Start();
         }
     }
 }

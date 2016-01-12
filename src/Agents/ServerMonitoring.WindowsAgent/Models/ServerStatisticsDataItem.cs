@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ServerMonitoring.WindowsAgent.Enums;
+using ServerMonitoring.WindowsAgent.Models.Enums;
 
 namespace ServerMonitoring.WindowsAgent.Models
 {

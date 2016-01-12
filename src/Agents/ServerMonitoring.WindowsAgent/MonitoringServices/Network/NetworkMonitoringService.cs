@@ -3,9 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
-using ServerMonitoring.WindowsAgent.Enums;
-using ServerMonitoring.WindowsAgent.Helpers;
 using ServerMonitoring.WindowsAgent.Models;
+using ServerMonitoring.WindowsAgent.Models.Enums;
 
 namespace ServerMonitoring.WindowsAgent.MonitoringServices.Network
 {
@@ -67,6 +66,29 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.Network
                     Wait();
                 }
                 catch { }
+            }
+        }
+
+        private static class SizeHelper
+        {
+            public static Tuple<long, string> GetSizeDisplay(long bytes)
+            {
+                if (bytes < 1024)
+                {
+                    return new Tuple<long, string>(bytes, "B");
+                }
+
+                if (bytes < 1024 * 1024)
+                {
+                    return new Tuple<long, string>(bytes / 1024, "KB");
+                }
+
+                if (bytes < 1024 * 1024 * 1024)
+                {
+                    return new Tuple<long, string>(bytes / (1024 * 1024), "MB");
+                }
+
+                return new Tuple<long, string>(bytes / (1024 * 1024 * 1024), "GB");
             }
         }
     }

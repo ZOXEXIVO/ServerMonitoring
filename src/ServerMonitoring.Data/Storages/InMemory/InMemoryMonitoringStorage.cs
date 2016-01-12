@@ -11,13 +11,13 @@ namespace ServerMonitoring.Data.Storages.InMemory
 {
     public class InMemoryMonitoringStorage : IMonitoringStorage
     {
-        private readonly ConcurrentDictionary<int, ServerInfo> _servers;
-        private readonly ConcurrentDictionary<int, InMemoryServerData> _serversData;
+        private readonly ConcurrentDictionary<string, ServerInfo> _servers;
+        private readonly ConcurrentDictionary<string, InMemoryServerData> _serversData;
 
         public InMemoryMonitoringStorage()
         {
-            _servers = new ConcurrentDictionary<int, ServerInfo>();
-            _serversData = new ConcurrentDictionary<int, InMemoryServerData>();
+            _servers = new ConcurrentDictionary<string, ServerInfo>();
+            _serversData = new ConcurrentDictionary<string, InMemoryServerData>();
         }
 
         public async Task<List<ServerInfo>> GetServersAsync()
@@ -29,21 +29,17 @@ namespace ServerMonitoring.Data.Storages.InMemory
         {
             if (data == null)
                 return;
+            
+            _servers.AddOrUpdate(data.Server.Id, i => data.Server, (i, u) => data.Server);
 
-            var serverHash = data.Server.GetHashCode();
-
-            _servers.AddOrUpdate(serverHash, i => data.Server, (i, u) => data.Server);
-
-            var serverData = _serversData.GetOrAdd(serverHash, hash => new InMemoryServerData());
+            var serverData = _serversData.GetOrAdd(data.Server.Id, hash => new InMemoryServerData());
 
             await serverData.InternalPush(data.Items);
         }
 
         public async Task<ServerPullData> PullAsync(MonitoringQuery query)
         {
-            var serverHash = query.Server.GetHashCode();
-
-            var serverData = _serversData.GetOrAdd(serverHash, hash => new InMemoryServerData()).ToList();
+            var serverData = _serversData.GetOrAdd(query.Server.Id, hash => new InMemoryServerData()).ToList();
 
             if(!serverData.Any())
                 return new ServerPullData();

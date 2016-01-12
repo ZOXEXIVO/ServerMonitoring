@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
-using ServerMonitoring.WindowsAgent.Enums;
 using ServerMonitoring.WindowsAgent.Models;
+using ServerMonitoring.WindowsAgent.Models.Enums;
 
 namespace ServerMonitoring.WindowsAgent.MonitoringServices.CPU
 {

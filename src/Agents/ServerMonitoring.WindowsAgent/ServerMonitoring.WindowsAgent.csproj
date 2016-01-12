@@ -49,8 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\MonitoringApp.cs" />
-    <Compile Include="Enums\ServerStatisticsType.cs" />
-    <Compile Include="Pusher\HttpPusher.cs" />
+    <Compile Include="Models\Enums\ServerStatisticsType.cs" />
     <Compile Include="Models\ServerInfo.cs" />
     <Compile Include="Models\ServerPushData.cs" />
     <Compile Include="Models\ServerStatisticsDataItem.cs" />
@@ -62,9 +61,13 @@
     <Compile Include="MonitoringServices\IMonitoringService.cs" />
     <Compile Include="MonitoringServices\Memory\MemoryMonitoringService.cs" />
     <Compile Include="MonitoringServices\Network\NetworkMonitoringService.cs" />
-    <Compile Include="Helpers\SizeStringHelper.cs" />
     <Compile Include="Services\ComputerID\IComputerIdService.cs" />
     <Compile Include="Services\ComputerID\MacIDService\MacAddressIdService.cs" />
+    <Compile Include="Services\Output\ConsoleOutput\ConsoleOutputService.cs" />
+    <Compile Include="Services\Output\IOutputService.cs" />
+    <Compile Include="Services\Transport\CoreTransportService.cs" />
+    <Compile Include="Services\Transport\HttpTransport\HttpTransportService.cs" />
+    <Compile Include="Services\Transport\ITransportService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
