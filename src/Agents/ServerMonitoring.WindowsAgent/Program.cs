@@ -14,9 +14,7 @@ namespace ServerMonitoring.WindowsAgent
 
             application.Start();
 
-            var serverInfo = application.GetServerInfo();
-
-            Console.Title = string.Format("{0} - {1}", serverInfo.MachineName, String.Join(", ", serverInfo.IPs));
+            Console.Title = application.Server + " monitoring";
 
             while (true)
             {

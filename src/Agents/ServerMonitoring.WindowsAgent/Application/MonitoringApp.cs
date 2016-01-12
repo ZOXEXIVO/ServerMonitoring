@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ServerMonitoring.WindowsAgent.Helpers;
 using ServerMonitoring.WindowsAgent.Models;
-using ServerMonitoring.WindowsAgent.Services;
-using ServerMonitoring.WindowsAgent.Services.CPU;
-using ServerMonitoring.WindowsAgent.Services.Disk;
-using ServerMonitoring.WindowsAgent.Services.Memory;
-using ServerMonitoring.WindowsAgent.Services.Network;
+using ServerMonitoring.WindowsAgent.MonitoringServices;
+using ServerMonitoring.WindowsAgent.MonitoringServices.CPU;
+using ServerMonitoring.WindowsAgent.MonitoringServices.Disk;
+using ServerMonitoring.WindowsAgent.MonitoringServices.Memory;
+using ServerMonitoring.WindowsAgent.MonitoringServices.Network;
+using ServerMonitoring.WindowsAgent.Services.ComputerID;
+using ServerMonitoring.WindowsAgent.Services.ComputerID.MacIDService;
 
 namespace ServerMonitoring.WindowsAgent.Application
 {
     public class MonitoringApp
     {
         private readonly List<IMonitoringService> _monitoringServices;
+        private readonly IComputerIdService _idService;
 
-        private readonly ServerPushData _pushData;
+        private ServerInfo _serverInfo;
 
         public MonitoringApp()
         {
@@ -27,7 +29,7 @@ namespace ServerMonitoring.WindowsAgent.Application
                 new NetworkMonitoringService()
             };
 
-            _pushData = new ServerPushData();
+            _idService = new MacAddressIdService();
 
             InitServerInfo();
         }
@@ -44,25 +46,24 @@ namespace ServerMonitoring.WindowsAgent.Application
                 service.Stop();
         }
 
+        public ServerInfo Server => _serverInfo;
+
         private void InitServerInfo()
         {
-            _pushData.Server = new ServerInfo
+            _serverInfo = new ServerInfo
             {
-                MachineName = Environment.MachineName,
-                IPs = IPHelper.GetAllIPs()
+                Id = _idService.GetCurrentComputerId(),
+                MachineName = Environment.MachineName
             };
-        }
-
-        public ServerInfo GetServerInfo()
-        {
-            return _pushData.Server;
         }
 
         public ServerPushData GetDataToPush()
         {
-            _pushData.Items = _monitoringServices.SelectMany(x => x.GetData()).ToList();
-
-            return _pushData;
+            return new ServerPushData()
+            {
+                Server = _serverInfo,
+                Items = _monitoringServices.SelectMany(x => x.GetData())
+            };
         }
     }
 }

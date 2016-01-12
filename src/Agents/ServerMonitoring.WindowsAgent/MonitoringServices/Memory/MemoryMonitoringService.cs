@@ -4,7 +4,7 @@ using System.Management;
 using ServerMonitoring.WindowsAgent.Enums;
 using ServerMonitoring.WindowsAgent.Models;
 
-namespace ServerMonitoring.WindowsAgent.Services.Memory
+namespace ServerMonitoring.WindowsAgent.MonitoringServices.Memory
 {
     public class MemoryMonitoringService : CoreMonitoringService
     {

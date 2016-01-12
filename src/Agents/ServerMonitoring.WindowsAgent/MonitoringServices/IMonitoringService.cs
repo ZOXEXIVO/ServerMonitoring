@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using ServerMonitoring.WindowsAgent.Models;
 
-namespace ServerMonitoring.WindowsAgent.Services
+namespace ServerMonitoring.WindowsAgent.MonitoringServices
 {
     public interface IMonitoringService
     {

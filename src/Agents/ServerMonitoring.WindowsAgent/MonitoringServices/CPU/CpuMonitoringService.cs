@@ -5,7 +5,7 @@ using System.Management;
 using ServerMonitoring.WindowsAgent.Enums;
 using ServerMonitoring.WindowsAgent.Models;
 
-namespace ServerMonitoring.WindowsAgent.Services.CPU
+namespace ServerMonitoring.WindowsAgent.MonitoringServices.CPU
 {
     public class CpuMonitoringService : CoreMonitoringService
     {

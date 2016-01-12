@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ServerMonitoring.WindowsAgent.Models
@@ -10,7 +11,7 @@ namespace ServerMonitoring.WindowsAgent.Models
     {
         public ServerPushData()
         {
-            Items = new List<ServerStatisticsDataItem>();
+            Items = Enumerable.Empty<ServerStatisticsDataItem>();
         }
 
         /// <summary>
@@ -21,7 +22,7 @@ namespace ServerMonitoring.WindowsAgent.Models
         /// <summary>
         /// Data items (CPU, Memory, Disk data)
         /// </summary>
-        public List<ServerStatisticsDataItem> Items { get; set; }
+        public IEnumerable<ServerStatisticsDataItem> Items { get; set; }
 
         public override string ToString()
         {

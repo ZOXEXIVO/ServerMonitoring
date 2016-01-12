@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServerMonitoring.WindowsAgent.SizeHelper
+namespace ServerMonitoring.WindowsAgent.Helpers
 {
     public static class SizeHelper
     {

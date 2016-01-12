@@ -5,7 +5,7 @@ using System.Management;
 using ServerMonitoring.WindowsAgent.Enums;
 using ServerMonitoring.WindowsAgent.Models;
 
-namespace ServerMonitoring.WindowsAgent.Services.Disk
+namespace ServerMonitoring.WindowsAgent.MonitoringServices.Disk
 {
     public class DiskMonitoringService : CoreMonitoringService
     {

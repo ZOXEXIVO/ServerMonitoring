@@ -50,20 +50,21 @@
   <ItemGroup>
     <Compile Include="Application\MonitoringApp.cs" />
     <Compile Include="Enums\ServerStatisticsType.cs" />
-    <Compile Include="Helpers\IPHelper.cs" />
     <Compile Include="Pusher\HttpPusher.cs" />
     <Compile Include="Models\ServerInfo.cs" />
     <Compile Include="Models\ServerPushData.cs" />
     <Compile Include="Models\ServerStatisticsDataItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CoreMonitoringService.cs" />
-    <Compile Include="Services\CPU\CpuMonitoringService.cs" />
-    <Compile Include="Services\Disk\DiskMonitoringService.cs" />
-    <Compile Include="Services\IMonitoringService.cs" />
-    <Compile Include="Services\Memory\MemoryMonitoringService.cs" />
-    <Compile Include="Services\Network\NetworkMonitoringService.cs" />
-    <Compile Include="Helpers\SizeHelper.cs" />
+    <Compile Include="MonitoringServices\CoreMonitoringService.cs" />
+    <Compile Include="MonitoringServices\CPU\CpuMonitoringService.cs" />
+    <Compile Include="MonitoringServices\Disk\DiskMonitoringService.cs" />
+    <Compile Include="MonitoringServices\IMonitoringService.cs" />
+    <Compile Include="MonitoringServices\Memory\MemoryMonitoringService.cs" />
+    <Compile Include="MonitoringServices\Network\NetworkMonitoringService.cs" />
+    <Compile Include="Helpers\SizeStringHelper.cs" />
+    <Compile Include="Services\ComputerID\IComputerIdService.cs" />
+    <Compile Include="Services\ComputerID\MacIDService\MacAddressIdService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -73,6 +74,7 @@
   <ItemGroup>
     <Content Include="appicon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

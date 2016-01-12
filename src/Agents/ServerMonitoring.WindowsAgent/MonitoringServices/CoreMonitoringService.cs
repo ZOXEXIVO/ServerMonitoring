@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ServerMonitoring.WindowsAgent.Models;
 
-namespace ServerMonitoring.WindowsAgent.Services
+namespace ServerMonitoring.WindowsAgent.MonitoringServices
 {
     public abstract class CoreMonitoringService : IMonitoringService
     {

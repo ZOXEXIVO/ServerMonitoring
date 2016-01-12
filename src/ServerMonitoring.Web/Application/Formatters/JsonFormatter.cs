@@ -13,7 +13,7 @@ namespace ServerMonitoring.Web.Application.Formatters
 
         static JsonFormatter()
         {
-            SerializerSettings = new JsonSerializerSettings()
+            SerializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
