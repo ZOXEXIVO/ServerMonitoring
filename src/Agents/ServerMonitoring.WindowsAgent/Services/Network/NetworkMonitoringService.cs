@@ -24,7 +24,7 @@ namespace ServerMonitoring.WindowsAgent.Services.Network
                 Name = data.Key,
                 Type = ServerStatisticsType.NETWORK,
                 CurrentValue = data.Value,
-                CurrentValueDisplay = "%"
+                CurrentValueDisplay = DisplayValues.GetOrAdd(data.Key, key => "")
             });
         }
 

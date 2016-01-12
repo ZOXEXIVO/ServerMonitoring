@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using ServerMonitoring.WindowsAgent.Application;
 using ServerMonitoring.WindowsAgent.Pusher;
@@ -17,9 +18,19 @@ namespace ServerMonitoring.WindowsAgent
             {
                 var pushData = application.GetDataToPush();
 
-                var pusher = new HttpPusher();
-
-                pusher.Push(pushData);
+                try
+                {
+                    HttpPusher.Push(pushData);
+                    Console.WriteLine("ok");
+                }
+                catch (WebException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("error");
+                }
 
                 Thread.Sleep(1000);
             }
