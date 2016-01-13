@@ -151,7 +151,8 @@
                     scope.setCurrentServer = function (server) {
                         scope.currentServer = server;
 
-                        scope.serverData.items = [];
+                        if (scope.serverData)
+                            scope.serverData.items = [];
 
                         if (scope.refreshDataInterval) {
                             $interval.clear(scope.refreshDataInterval);
