@@ -36,7 +36,7 @@
                         }
 
                         if (name.indexOf('CPU') != -1) {
-                            return "col-lg-5";
+                            return "col-lg-2";
                         }
 
                         if (name.indexOf('MEMORY') != -1) {
