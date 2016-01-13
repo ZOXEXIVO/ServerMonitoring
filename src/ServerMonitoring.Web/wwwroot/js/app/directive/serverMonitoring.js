@@ -1,8 +1,7 @@
 ﻿(function () {
     var module = angular.module('serverMonitoring', ['ngSanitize']);
 
-    module.directive('serverMonitoring', [
-        'monitoringService', 'chartService', '$sce', '$interval', '$timeout', function (monitoringService, chartService, $sce, $interval, $timeout) {
+    module.directive('serverMonitoring', ['_monitoringService', '_chartService', '$sce', '$interval', '$timeout', function (_monitoringService, _chartService, $sce, $interval, $timeout) {
             var getSafeHost = function (host) {
                 if (host.indexOf('/', host.length - 1) !== -1) {
                     return host.substr(0, host.length - 1);
@@ -32,9 +31,9 @@
 
                     scope.getStatusImageSource = function(server) {
                         if (server.isActive)
-                            return '/images/green.png';
+                            return scope.host + '/images/green.png';
 
-                        return '/images/red.png';
+                        return scope.host + '/images/red.png';
                     }
 
                     scope.getWidthClass = function(name) {
@@ -71,7 +70,7 @@
                         });
                     };
                     scope.refreshServers = function() {
-                        var op = monitoringService.getServers(scope.host);
+                        var op = _monitoringService.getServers(scope.host);
                         op.success(function (data) {
                             if (!scope.servers || scope.servers.length == 0)
                                 scope.servers = data;
@@ -87,7 +86,7 @@
                         if (!scope.currentServer)
                             return;
 
-                        var op = monitoringService.pull(scope.host, { server: { id: scope.currentServer.id } });
+                        var op = _monitoringService.pull(scope.host, { server: { id: scope.currentServer.id } });
 
                         op.success(function (data) {
                             scope.serverData = data;
@@ -119,7 +118,7 @@
                     };
 
                     scope.updateData = function () {
-                        var op = monitoringService.pull(scope.host, { server: { id: scope.currentServer.id } });
+                        var op = _monitoringService.pull(scope.host, { server: { id: scope.currentServer.id } });
 
                         op.success(function (data) {
                             scope.updateServerData(data);
@@ -136,7 +135,7 @@
 
                                 var ctx = element.getContext("2d");
 
-                                item.chartLine = new Chart(ctx).Line(chartService.getChartData(item.data), {
+                                item.chartLine = new Chart(ctx).Line(_chartService.getChartData(item.data), {
                                     pointDotRadius: 1,
                                     bezierCurve: false,
                                     pointHitDetectionRadius: 1,
@@ -161,7 +160,7 @@
         }
     ]);
 
-    module.service('monitoringService', [
+    module.service('_monitoringService', [
         '$http', function ($http) {
             var resource = '/monitoring/';
 
@@ -181,7 +180,7 @@
         }
     ]);
 
-    module.service('chartService', function () {
+    module.service('_chartService', function () {
         return {
             getChartData: function (data) {
                 var labels = [];
