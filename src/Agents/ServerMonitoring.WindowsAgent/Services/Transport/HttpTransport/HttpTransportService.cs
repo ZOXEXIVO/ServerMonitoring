@@ -8,7 +8,12 @@ namespace ServerMonitoring.WindowsAgent.Services.Transport.HttpTransport
 {
     public class HttpTransportService : CoreTransportService
     {
-        private string _host = "http://wsmonitoring.azurewebsites.net";
+        private readonly string _host;
+
+        public HttpTransportService(string host)
+        {
+            _host = host;
+        }
 
         public override async Task InternalPushDataAsync(ServerPushData data)
         {

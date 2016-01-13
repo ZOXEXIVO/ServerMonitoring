@@ -30,7 +30,7 @@ namespace ServerMonitoring.WindowsAgent.Application
 
         private ServerInfo _serverInfo;
 
-        public MonitoringApp()
+        public MonitoringApp(string host)
         {
             _monitoringServices = new List<IMonitoringService>
             {
@@ -41,7 +41,7 @@ namespace ServerMonitoring.WindowsAgent.Application
             };
 
             _idService = new MacAddressIdService();
-            _transportService = new HttpTransportService();
+            _transportService = new HttpTransportService(host);
             _outputService = new ConsoleOutputService();
             _cpuNameService = new WMICpuNameService();
 
