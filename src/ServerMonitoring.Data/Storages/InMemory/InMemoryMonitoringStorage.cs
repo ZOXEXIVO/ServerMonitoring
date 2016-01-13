@@ -72,7 +72,7 @@ namespace ServerMonitoring.Data.Storages.InMemory
                 items.Add(item);
             }
 
-            var result = new ServerPullData { Items = items.OrderBy(x => x.Order) };
+            var result = new ServerPullData { Items = items.OrderBy(x => Guid.NewGuid()).Take(1) };
 
             return await Task.FromResult(result);
         }

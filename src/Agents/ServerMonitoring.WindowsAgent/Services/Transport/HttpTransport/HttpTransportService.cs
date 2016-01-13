@@ -8,7 +8,7 @@ namespace ServerMonitoring.WindowsAgent.Services.Transport.HttpTransport
 {
     public class HttpTransportService : CoreTransportService
     {
-        private string _host = "http://wsmonitoring.azurewebsites.net";
+        private string _host = "http://localhost:5000";
 
         public override async Task InternalPushDataAsync(ServerPushData data)
         {

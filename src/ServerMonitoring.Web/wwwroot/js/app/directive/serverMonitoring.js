@@ -43,7 +43,7 @@
                         }
 
                         if (name.indexOf('CPU') != -1) {
-                            return "col-lg-2";
+                            return "col-lg-3";
                         }
 
                         if (name.indexOf('MEMORY') != -1) {
@@ -111,6 +111,8 @@
                                 serverItem.currentValue = dataItem.currentValue;
                                 serverItem.currentValueDisplay = dataItem.currentValueDisplay;
                                 serverItem.data = dataItem.data;
+                            } else {
+                                scope.serverData.items.push(dataItem);
                             }
                         });
                         
@@ -148,6 +150,8 @@
 
                     scope.setCurrentServer = function (server) {
                         scope.currentServer = server;
+
+                        scope.serverData.items = [];
 
                         if (scope.refreshDataInterval) {
                             $interval.clear(scope.refreshDataInterval);
