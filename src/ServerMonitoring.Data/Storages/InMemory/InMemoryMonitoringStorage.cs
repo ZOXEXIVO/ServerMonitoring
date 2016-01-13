@@ -44,21 +44,24 @@ namespace ServerMonitoring.Data.Storages.InMemory
             if(!serverData.Any())
                 return new ServerPullData();
 
-            var result = new ServerPullData();
+            var items = new List<ServerStatisticsDataItem>();
 
             foreach (var sData in serverData)
             {
                 var item = new ServerStatisticsDataItem
                 {
                     Name = sData.Key,
+                    Order = sData.Value.Order,
                     CurrentValue = await sData.Value.LastValue(),
                     CurrentValueDisplay = sData.Value.Display,
                     Type = sData.Value.Type,
                     Data = await sData.Value.FilterData(query)
                 };
 
-                result.Items.Add(item);
+                items.Add(item);
             }
+
+            var result = new ServerPullData { Items = items.OrderBy(x => x.Order) };
 
             return await Task.FromResult(result);
         }

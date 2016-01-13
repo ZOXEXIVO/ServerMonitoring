@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 using ServerMonitoring.WindowsAgent.Models;
@@ -10,9 +11,11 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.Memory
     {
         public override IEnumerable<ServerStatisticsDataItem> GetData()
         {
+            int i = 0;
             return CurrentValues.Select(data => new ServerStatisticsDataItem
             {
                 Name = data.Key,
+                Order = 1100 + i++,
                 Type = ServerStatisticsType.MEMORY,
                 CurrentValue = data.Value,
                 CurrentValueDisplay = "%"
@@ -37,7 +40,7 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.Memory
 
                     if (memoryInfo != null)
                     {
-                        var percent = ((memoryInfo.TotalVisibleMemorySize - memoryInfo.FreePhysicalMemory) / memoryInfo.TotalVisibleMemorySize) * 100;
+                        var percent = (int)((memoryInfo.TotalVisibleMemorySize - memoryInfo.FreePhysicalMemory) / memoryInfo.TotalVisibleMemorySize) * 100;
                         CurrentValues.AddOrUpdate("MEMORY", memoryItem => percent, (memoryItem, val) => percent);
                     }
                     

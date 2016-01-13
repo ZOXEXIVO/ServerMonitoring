@@ -19,9 +19,11 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.Network
 
         public override IEnumerable<ServerStatisticsDataItem> GetData()
         {
+            int i = 0;
             return CurrentValues.Select(data => new ServerStatisticsDataItem
             {
                 Name = data.Key,
+                Order = 1400 + i++,
                 Type = ServerStatisticsType.NETWORK,
                 CurrentValue = data.Value,
                 CurrentValueDisplay = DisplayValues.GetOrAdd(data.Key, key => "")

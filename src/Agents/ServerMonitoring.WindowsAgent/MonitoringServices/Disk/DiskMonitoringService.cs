@@ -11,13 +11,23 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.Disk
     {
         public override IEnumerable<ServerStatisticsDataItem> GetData()
         {
+            int i = 0;
             return CurrentValues.Select(data => new ServerStatisticsDataItem
             {
                 Name = data.Key,
+                Order = 1200 + i++,
                 Type = ServerStatisticsType.DISK,
                 CurrentValue = data.Value,
                 CurrentValueDisplay = "%"
             });
+        }
+
+        protected int GetOrderForName(string name, int count)
+        {
+            if (name == "_Total")
+                return 1000;
+
+            return 1000 + Convert.ToInt32(name);
         }
 
         protected override void MonitoringThread()

@@ -27,6 +27,11 @@ namespace ServerMonitoring.WindowsAgent.Models
         public string CurrentValueDisplay { get; set; }
 
         /// <summary>
+        /// Order in UI list
+        /// </summary>
+        public int Order { get; set; }
+
+        /// <summary>
         /// Type of element for grouping
         /// </summary>
         public ServerStatisticsType Type { get; set; }

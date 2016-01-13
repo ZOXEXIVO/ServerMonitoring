@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ServerMonitoring.Data.Models.Common;
 
 namespace ServerMonitoring.Data.Models
@@ -10,12 +11,12 @@ namespace ServerMonitoring.Data.Models
     {
         public ServerPullData()
         {
-            Items = new List<ServerStatisticsDataItem>();
+            Items = Enumerable.Empty<ServerStatisticsDataItem>();
         }
 
         /// <summary>
         /// Data items (CPU, Memory, Disk data)
         /// </summary>
-        public List<ServerStatisticsDataItem> Items { get; set; } 
+        public IEnumerable<ServerStatisticsDataItem> Items { get; set; } 
     }
 }

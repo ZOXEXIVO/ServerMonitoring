@@ -13,6 +13,7 @@ namespace ServerMonitoring.Data.Storages.InMemory.Data
     {
         private readonly FixedSizeConcurrentQueue<InMemoryTimeValue> _monitoringData;
 
+        public int Order { get; set; }
         public string Display { get; set; }
         public ServerStatisticsType Type { get; set; }
 
@@ -27,6 +28,7 @@ namespace ServerMonitoring.Data.Storages.InMemory.Data
         {
             _monitoringData.Enqueue(new InMemoryTimeValue(item.CurrentValue, DateTime.UtcNow));
 
+            Order = item.Order;
             Display = item.CurrentValueDisplay;
 
             await Task.CompletedTask;
