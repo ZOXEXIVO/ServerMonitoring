@@ -23,7 +23,7 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.Network
             return CurrentValues.Select(data => new ServerStatisticsDataItem
             {
                 Name = data.Key,
-                Order = 1400 + i++,
+                Order = (int)ItemTypeOffset.NETWORK + i++,
                 Type = ServerStatisticsType.NETWORK,
                 CurrentValue = data.Value,
                 CurrentValueDisplay = DisplayValues.GetOrAdd(data.Key, key => "")

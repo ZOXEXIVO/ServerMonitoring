@@ -15,26 +15,18 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.Disk
             return CurrentValues.Select(data => new ServerStatisticsDataItem
             {
                 Name = data.Key,
-                Order = 1200 + i++,
+                Order = (int)ItemTypeOffset.DISK + i++,
                 Type = ServerStatisticsType.DISK,
                 CurrentValue = data.Value,
                 CurrentValueDisplay = "%"
             });
         }
 
-        protected int GetOrderForName(string name, int count)
-        {
-            if (name == "_Total")
-                return 1000;
-
-            return 1000 + Convert.ToInt32(name);
-        }
-
         protected override void MonitoringThread()
         {
             base.MonitoringThread();
 
-            var wmiObject = new ManagementObjectSearcher("select * from Win32_PerfFormattedData_PerfDisk_PhysicalDisk");
+            var wmiObject = new ManagementObjectSearcher("select * from Win32_PerfFormattedData_PerfDisk_PhysicalDisk WHERE Name != '_Total'");
 
             while (true)
             {
@@ -42,19 +34,21 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.Disk
                 {
                     var readWriteValues = wmiObject.Get().Cast<ManagementObject>().Select(mo => new
                     {
-                        Name = Convert.ToInt32(mo["Name"]),
+                        Name = Convert.ToString(mo["Name"]),
                         DiskReadTime = Convert.ToInt32(mo["PercentDiskReadTime"]),
                         DiskWriteTime = Convert.ToInt32(mo["PercentDiskWriteTime"])
                     });
 
                     foreach (var item in readWriteValues)
                     {
-                        CurrentValues.AddOrUpdate("DISK_READ_" + item.Name, diskItem => item.DiskReadTime, (diskItem, val) => item.DiskReadTime);
-                        CurrentValues.AddOrUpdate("DISK_WRITE_" + item.Name, diskItem => item.DiskWriteTime, (diskItem, val) => item.DiskWriteTime);
+                        CurrentValues.AddOrUpdate("DISK_READ_" + (item.Name ?? "").Replace(" ", "_"), diskItem => item.DiskReadTime,
+                            (diskItem, val) => item.DiskReadTime);
+                        CurrentValues.AddOrUpdate("DISK_WRITE_" + (item.Name ?? "").Replace(" ", "_"), diskItem => item.DiskWriteTime,
+                            (diskItem, val) => item.DiskWriteTime);
                     }
 
                     Wait();
-                }
+                } 
                 catch { }
             }
         }

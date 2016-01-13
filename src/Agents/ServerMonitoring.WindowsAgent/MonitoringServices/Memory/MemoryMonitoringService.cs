@@ -14,7 +14,7 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.Memory
             return CurrentValues.Select(data => new ServerStatisticsDataItem
             {
                 Name = data.Key,
-                Order = 1100 + i++,
+                Order = (int)ItemTypeOffset.MEMORY + i++,
                 Type = ServerStatisticsType.MEMORY,
                 CurrentValue = data.Value,
                 CurrentValueDisplay = "%"

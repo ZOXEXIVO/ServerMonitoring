@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\MonitoringApp.cs" />
+    <Compile Include="Models\Enums\ItemTypeOffset.cs" />
     <Compile Include="Models\Enums\ServerStatisticsType.cs" />
     <Compile Include="Models\ServerInfo.cs" />
     <Compile Include="Models\ServerPushData.cs" />

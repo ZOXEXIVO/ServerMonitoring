@@ -26,9 +26,9 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.CPU
         protected int GetOrderForName(string name, int count)
         {
             if (name == "_Total")
-                return 1000;
+                return (int)ItemTypeOffset.TOTAL_CPU;
 
-            return 1001 + Convert.ToInt32(name);
+            return (int)ItemTypeOffset.CPU + Convert.ToInt32(name);
         }
 
         protected override void MonitoringThread()
