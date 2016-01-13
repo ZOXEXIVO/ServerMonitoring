@@ -31,9 +31,7 @@ namespace ServerMonitoring.WindowsAgent.Models
             builder.AppendLine(Server.ToString());
 
             foreach (var item in Items)
-            {
                 builder.AppendLine(item.ToString());
-            }
 
             return builder.ToString();
         }

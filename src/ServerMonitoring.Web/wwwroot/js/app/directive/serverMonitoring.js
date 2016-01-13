@@ -27,8 +27,15 @@
 
                     scope.servers = [];
                     scope.currentServer = null;
+                    
+                    scope.refreshDataInterval = null;
 
-                    scope.refreshInterval = null;
+                    scope.getStatusImageSource = function(server) {
+                        if (server.isActive)
+                            return '/images/green.png';
+
+                        return '/images/red.png';
+                    }
 
                     scope.getWidthClass = function(name) {
                         if (name.indexOf('CPU') != -1 && name.indexOf('_Total') != -1) {
@@ -50,17 +57,32 @@
                         return "col-lg-12";
                     };
 
-                    scope.refreshServerList = function () {
-                        var op = monitoringService.getServers(scope.host);
+                    scope.updateServers = function (data) {
+                        data.forEach(function (item) {
+                            var serverItem = scope.servers.filter(function (sitem) {
+                                return item.id == sitem.id;
+                            })[0];
 
-                        op.success(function (data) {
-                            scope.servers = data;
+                            if (serverItem) {
+                                serverItem.isActive = item.isActive;
+                            } else {
+                                scope.servers.push(item);
+                            }
                         });
-                        op.error(function () {
-
+                    };
+                    scope.refreshServers = function() {
+                        var op = monitoringService.getServers(scope.host);
+                        op.success(function (data) {
+                            if (!scope.servers || scope.servers.length == 0)
+                                scope.servers = data;
+                            else scope.updateServers(data);
                         });
                     };
 
+                    scope.refreshServers();
+
+                    scope.refreshServerInterval = $interval(scope.refreshServers, 1000);
+                    
                     scope.refreshData = function () {
                         if (!scope.currentServer)
                             return;
@@ -74,8 +96,8 @@
 
                             innerScope.updateData();
 
-                            if (!scope.refreshInterval)
-                                scope.refreshInterval = $interval(function () { innerScope.updateData(); }, 1000);
+                            if (!scope.refreshDataInterval)
+                                scope.refreshDataInterval = $interval(function () { innerScope.updateData(); }, 1000);
                         });
                     };
 
@@ -127,15 +149,13 @@
                     scope.setCurrentServer = function (server) {
                         scope.currentServer = server;
 
-                        if (scope.refreshInterval) {
-                            $interval.clear(scope.refreshInterval);
-                            scope.refreshInterval = null;
+                        if (scope.refreshDataInterval) {
+                            $interval.clear(scope.refreshDataInterval);
+                            scope.refreshDataInterval = null;
                         }
 
                         scope.refreshData();
                     };
-
-                    scope.refreshServerList();
                 }
             };
         }

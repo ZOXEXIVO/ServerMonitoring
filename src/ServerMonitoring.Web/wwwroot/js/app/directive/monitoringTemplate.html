@@ -1,6 +1,17 @@
-﻿<ul class="nav nav-tabs" role="tablist">
+﻿<style>
+    .m-status-img {
+        width: 16px; 
+        height: 16px;
+        margin-bottom: 3px;
+
+    }
+</style>
+
+<ul class="nav nav-tabs" role="tablist">
     <li role="presentation" ng-repeat="server in servers">
-        <a href="#s_{{server.id}}" aria-controls="s_{{server.id}}" role="tab" data-toggle="tab" ng-click="setCurrentServer(server)">{{server.machineName}}</a>
+        <a href="#s_{{server.id}}" aria-controls="s_{{server.id}}" role="tab" data-toggle="tab" ng-click="setCurrentServer(server)">
+            <img ng-src="{{getStatusImageSource(server)}}" class="m-status-img"/>&nbsp;<span style="padding-top: 1px">{{server.machineName}}</span>
+        </a>
     </li>
 </ul>
 
@@ -8,9 +19,14 @@
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
         <div class="row">
+            <ul class="list-unstyled" style="margin-left: 13px">
+                <li ng-repeat="cpu in currentServer.processors">
+                    <h4>{{cpu}}</h4>
+                </li>
+            </ul>
             <div ng-repeat="item in serverData.items" style="height: 200px;" class="{{getWidthClass(item.name)}}">
                 <h4 style="margin-bottom: 0">{{item.name}} - {{item.currentValue}} {{item.currentValueDisplay}}</h4>
-                <canvas id="mchart_{{item.name}}" style="width: 100%;height: 180px"></canvas>
+                <canvas id="mchart_{{item.name}}" style="width: 100%; height: 180px"></canvas>
             </div>
         </div>
     </div>

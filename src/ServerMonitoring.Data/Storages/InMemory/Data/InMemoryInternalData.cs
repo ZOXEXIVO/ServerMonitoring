@@ -47,6 +47,12 @@ namespace ServerMonitoring.Data.Storages.InMemory.Data
             if (query.SinceByDate.HasValue)
                 data = data.Where(x => x.Date > query.SinceByDate);
 
+            if (query.IsEmpty)
+            {
+                var defaultLastTime = DateTime.UtcNow.AddMinutes(-5);
+                data = data.Where(x => x.Date > defaultLastTime);
+            }
+
             return await Task.FromResult(data.Select(y => y.Value).ToList());
         }
 

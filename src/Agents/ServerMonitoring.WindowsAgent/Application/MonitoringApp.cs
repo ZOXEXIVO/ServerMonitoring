@@ -11,6 +11,8 @@ using ServerMonitoring.WindowsAgent.MonitoringServices.Memory;
 using ServerMonitoring.WindowsAgent.MonitoringServices.Network;
 using ServerMonitoring.WindowsAgent.Services.ComputerID;
 using ServerMonitoring.WindowsAgent.Services.ComputerID.MacIDService;
+using ServerMonitoring.WindowsAgent.Services.CPU;
+using ServerMonitoring.WindowsAgent.Services.CPU.WMI;
 using ServerMonitoring.WindowsAgent.Services.Output;
 using ServerMonitoring.WindowsAgent.Services.Output.ConsoleOutput;
 using ServerMonitoring.WindowsAgent.Services.Transport;
@@ -24,6 +26,7 @@ namespace ServerMonitoring.WindowsAgent.Application
         private readonly IComputerIdService _idService;
         private readonly ITransportService _transportService;
         private readonly IOutputService _outputService;
+        private readonly ICpuNameService _cpuNameService;
 
         private ServerInfo _serverInfo;
 
@@ -40,6 +43,7 @@ namespace ServerMonitoring.WindowsAgent.Application
             _idService = new MacAddressIdService();
             _transportService = new HttpTransportService();
             _outputService = new ConsoleOutputService();
+            _cpuNameService = new WMICpuNameService();
 
             InitServerInfo();
         }
@@ -75,9 +79,11 @@ namespace ServerMonitoring.WindowsAgent.Application
 
                     Thread.Sleep(3000);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     _outputService.InfoLine("exception");
+                    _outputService.InfoLine(ex.Message);
+
                     Thread.Sleep(3000);
                 }
             }
@@ -96,7 +102,8 @@ namespace ServerMonitoring.WindowsAgent.Application
             _serverInfo = new ServerInfo
             {
                 Id = _idService.GetCurrentComputerId(),
-                MachineName = Environment.MachineName
+                MachineName = Environment.MachineName,
+                Processors = _cpuNameService.GetCPUNames()
             };
         }
 

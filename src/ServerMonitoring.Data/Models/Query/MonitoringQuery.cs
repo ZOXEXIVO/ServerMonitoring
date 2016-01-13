@@ -24,5 +24,8 @@ namespace ServerMonitoring.Data.Models.Query
         /// After record id
         /// </summary>
         public DateTime? SinceByDate { get; set; }
+
+
+        public bool IsEmpty => !DateFrom.HasValue && !DateTo.HasValue && !SinceByDate.HasValue;
     }
 }

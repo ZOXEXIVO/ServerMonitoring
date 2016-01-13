@@ -63,6 +63,8 @@
     <Compile Include="MonitoringServices\Network\NetworkMonitoringService.cs" />
     <Compile Include="Services\ComputerID\IComputerIdService.cs" />
     <Compile Include="Services\ComputerID\MacIDService\MacAddressIdService.cs" />
+    <Compile Include="Services\CPU\ICpuNameService.cs" />
+    <Compile Include="Services\CPU\WMI\WMICpuNameService.cs" />
     <Compile Include="Services\Output\ConsoleOutput\ConsoleOutputService.cs" />
     <Compile Include="Services\Output\IOutputService.cs" />
     <Compile Include="Services\Transport\CoreTransportService.cs" />

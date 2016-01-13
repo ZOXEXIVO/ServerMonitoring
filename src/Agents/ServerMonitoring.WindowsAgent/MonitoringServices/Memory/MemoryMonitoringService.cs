@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 using ServerMonitoring.WindowsAgent.Models;
@@ -40,7 +39,7 @@ namespace ServerMonitoring.WindowsAgent.MonitoringServices.Memory
 
                     if (memoryInfo != null)
                     {
-                        var percent = (int)((memoryInfo.TotalVisibleMemorySize - memoryInfo.FreePhysicalMemory) / memoryInfo.TotalVisibleMemorySize) * 100;
+                        var percent = (int)(((memoryInfo.TotalVisibleMemorySize - memoryInfo.FreePhysicalMemory) / memoryInfo.TotalVisibleMemorySize) * 100);
                         CurrentValues.AddOrUpdate("MEMORY", memoryItem => percent, (memoryItem, val) => percent);
                     }
                     

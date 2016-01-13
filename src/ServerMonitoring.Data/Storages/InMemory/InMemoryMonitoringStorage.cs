@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,16 +13,24 @@ namespace ServerMonitoring.Data.Storages.InMemory
     public class InMemoryMonitoringStorage : IMonitoringStorage
     {
         private readonly ConcurrentDictionary<string, ServerInfo> _servers;
+        private readonly ConcurrentDictionary<string, DateTime> _serversLastPush;
         private readonly ConcurrentDictionary<string, InMemoryServerData> _serversData;
 
         public InMemoryMonitoringStorage()
         {
             _servers = new ConcurrentDictionary<string, ServerInfo>();
+            _serversLastPush = new ConcurrentDictionary<string, DateTime>();
             _serversData = new ConcurrentDictionary<string, InMemoryServerData>();
         }
 
         public async Task<List<ServerInfo>> GetServersAsync()
         {
+            foreach (var server in _servers.Select(y => y.Value))
+            {
+                var lastPushDate = _serversLastPush.GetOrAdd(server.Id, hash => DateTime.UtcNow);
+                server.IsActive = (DateTime.UtcNow - lastPushDate).TotalSeconds < 10;
+            }
+
             return await Task.FromResult(_servers.Select(y => y.Value).ToList());
         }
 
@@ -31,6 +40,8 @@ namespace ServerMonitoring.Data.Storages.InMemory
                 return;
             
             _servers.AddOrUpdate(data.Server.Id, i => data.Server, (i, u) => data.Server);
+
+            _serversLastPush.AddOrUpdate(data.Server.Id, i => DateTime.UtcNow, (i, u) => DateTime.UtcNow);
 
             var serverData = _serversData.GetOrAdd(data.Server.Id, hash => new InMemoryServerData());
 
