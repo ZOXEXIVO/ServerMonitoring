@@ -154,11 +154,6 @@
                         if (scope.serverData)
                             scope.serverData.items = [];
 
-                        if (scope.refreshDataInterval) {
-                            $interval.clear(scope.refreshDataInterval);
-                            scope.refreshDataInterval = null;
-                        }
-
                         scope.refreshData();
                     };
                 }
