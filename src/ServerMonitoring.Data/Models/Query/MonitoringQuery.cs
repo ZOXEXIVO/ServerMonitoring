@@ -23,9 +23,13 @@ namespace ServerMonitoring.Data.Models.Query
         /// <summary>
         /// After record id
         /// </summary>
-        public DateTime? SinceByDate { get; set; }
+        public DateTime? SinceDate { get; set; }
 
+        /// <summary>
+        /// After some minutes
+        /// </summary>
+        public int? SinceMinute { get; set; }
 
-        public bool IsEmpty => !DateFrom.HasValue && !DateTo.HasValue && !SinceByDate.HasValue;
+        public bool IsEmpty => !DateFrom.HasValue && !DateTo.HasValue && !SinceDate.HasValue && SinceMinute.HasValue;
     }
 }

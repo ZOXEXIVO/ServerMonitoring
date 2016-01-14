@@ -44,9 +44,17 @@ namespace ServerMonitoring.Data.Storages.InMemory.Data
             if (query.DateTo.HasValue)
                 data = data.Where(x => x.Date <= query.DateTo);
 
-            if (query.SinceByDate.HasValue)
-                data = data.Where(x => x.Date > query.SinceByDate);
+            if (query.SinceDate.HasValue)
+                data = data.Where(x => x.Date >= query.SinceDate);
 
+            if (query.SinceMinute.HasValue)
+            {
+                var nowWithoutMinute = DateTime.UtcNow.AddMinutes(-query.SinceMinute.Value);
+                data = data.Where(x => x.Date >= nowWithoutMinute);
+            }
+
+
+            //by default - 5 minutes
             if (query.IsEmpty)
             {
                 var defaultLastTime = DateTime.UtcNow.AddMinutes(-5);

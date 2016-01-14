@@ -13,13 +13,11 @@ namespace ServerMonitoring.Data.Storages.InMemory
     public class InMemoryMonitoringStorage : IMonitoringStorage
     {
         private readonly ConcurrentDictionary<string, ServerInfo> _servers;
-        private readonly ConcurrentDictionary<string, DateTime> _serversLastPush;
         private readonly ConcurrentDictionary<string, InMemoryServerData> _serversData;
 
         public InMemoryMonitoringStorage()
         {
             _servers = new ConcurrentDictionary<string, ServerInfo>();
-            _serversLastPush = new ConcurrentDictionary<string, DateTime>();
             _serversData = new ConcurrentDictionary<string, InMemoryServerData>();
         }
 
@@ -27,8 +25,13 @@ namespace ServerMonitoring.Data.Storages.InMemory
         {
             foreach (var server in _servers.Select(y => y.Value))
             {
-                var lastPushDate = _serversLastPush.GetOrAdd(server.Id, hash => DateTime.UtcNow);
-                server.IsActive = (DateTime.UtcNow - lastPushDate).TotalSeconds < 10;
+                if (!server.LastPush.HasValue)
+                {
+                    server.IsActive = false;
+                    continue;
+                }
+                    
+                server.IsActive = (DateTime.UtcNow - server.LastPush.Value).TotalSeconds < 10;
             }
 
             return await Task.FromResult(_servers.Select(y => y.Value).ToList());
@@ -36,20 +39,22 @@ namespace ServerMonitoring.Data.Storages.InMemory
 
         public async Task PushAsync(ServerPushData data)
         {
+            DateTime now = DateTime.UtcNow;
+
             if (data == null)
                 return;
             
-            _servers.AddOrUpdate(data.Server.Id, i => data.Server, (i, u) => data.Server);
+            var serverInfo = _servers.AddOrUpdate(data.Server.Id, i => data.Server, (i, u) => data.Server);
 
-            _serversLastPush.AddOrUpdate(data.Server.Id, i => DateTime.UtcNow, (i, u) => DateTime.UtcNow);
+            serverInfo.LastPush = now;
 
-            var serverData = _serversData.GetOrAdd(data.Server.Id, hash => new InMemoryServerData());
-
-            await serverData.InternalPush(data.Items);
+            await _serversData.GetOrAdd(data.Server.Id, hash => new InMemoryServerData()).InternalPush(data.Items);
         }
 
         public async Task<ServerPullData> PullAsync(MonitoringQuery query)
         {
+            var server = _servers.GetOrAdd(query.Server.Id, hash => new ServerInfo());
+
             var serverData = _serversData.GetOrAdd(query.Server.Id, hash => new InMemoryServerData()).ToList();
 
             if(!serverData.Any())
@@ -72,7 +77,7 @@ namespace ServerMonitoring.Data.Storages.InMemory
                 items.Add(item);
             }
 
-            var result = new ServerPullData { Items = items.OrderBy(x => x.Order) };
+            var result = new ServerPullData { LastPush = server.LastPush, Items = items.OrderBy(x => x.Order) };
 
             return await Task.FromResult(result);
         }

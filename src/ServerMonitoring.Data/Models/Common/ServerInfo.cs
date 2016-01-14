@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace ServerMonitoring.Data.Models.Common
 {
@@ -29,5 +31,11 @@ namespace ServerMonitoring.Data.Models.Common
         /// Is server active
         /// </summary>
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Last server push
+        /// </summary>
+        [JsonIgnore]
+        public DateTime? LastPush { get; set; }
     }
 }

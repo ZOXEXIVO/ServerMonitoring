@@ -22,6 +22,10 @@
                 },
 
                 link: function (scope, element, attrs) {
+                    scope.query = {
+                        minuteFilter: { text: '5 minutes', value: 300 }
+                    };
+
                     var options = {
                         host: getSafeHost(attrs.host),
                         uiClasses: {
@@ -44,8 +48,19 @@
                             memory: 1,
                             disk: 2,
                             network:3
-                        }
+                        },
+                        filterVarians: []
                     };
+
+                    scope.initVarians = function () {
+                        var minutes = [1, 5, 10, 15, 20, 25, 30, 60];
+                        for (var i = 0; i < minutes.length; i++) {
+                            scope.data.filterVarians.push({
+                                text: minutes[i] + ' minute(s)',
+                                value: minutes[i] * 60
+                            });
+                        }
+                    }();
 
                     scope.uiHelpers = {
                         getStatusImageSource: function (server) {
@@ -92,7 +107,9 @@
 
                     scope.selectServer = function (server) {
                         scope.currentServer = server;
-                        
+
+                        scope.query.server = { id: scope.currentServer.id };
+
                         if (scope.serverData)
                             scope.serverData.items = [];
 
@@ -124,13 +141,28 @@
 
                     scope.refreshServers();
 
-                    scope.data.timerIntervals.refreshServerInterval = $interval(scope.refreshServers, 1000);
-                    
+                    scope.data.timerIntervals.refreshServerInterval = $interval(scope.refreshServers, 5000);
+
+                    scope.$watch(function() { return scope.query.minuteFilter; }, function(newVal, oldVal) {
+                        if (newVal) {
+                            $interval.cancel(scope.data.timerIntervals.refreshDataInterval);
+                            scope.data.timerIntervals.refreshDataInterval = null;
+
+                            scope.query.sinceDate = null;
+                            scope.query.sinceMinute = newVal.value;
+
+                            scope.refreshData();
+                        }
+                    });
+
                     scope.refreshData = function () {
                         if (!scope.currentServer)
                             return;
 
-                        var op = _monitoringService.pull(options.host, { server: { id: scope.currentServer.id } });
+                        var op = _monitoringService.pull(options.host, scope.query);
+
+                        //always clear
+                        scope.query.sinceMinute = null;
 
                         op.success(function (data) {
                             scope.serverData = data;
@@ -143,9 +175,12 @@
                     };
 
                     scope.updateData = function () {
-                        var op = _monitoringService.pull(options.host, { server: { id: scope.currentServer.id } });
+                        var op = _monitoringService.pull(options.host, scope.query);
 
                         op.success(function (data) {
+                            //save last data
+                            scope.query.sinceDate = data.lastPush;
+
                             data.items.forEach(function (dataItem) {
                                 var serverItem = scope.serverData.items.filter(function (sitem) {
                                     return dataItem.name == sitem.name;
@@ -154,7 +189,17 @@
                                 if (serverItem) {
                                     serverItem.currentValue = dataItem.currentValue;
                                     serverItem.currentValueDisplay = dataItem.currentValueDisplay;
-                                    serverItem.data = dataItem.data;
+
+                                    var limitLength = scope.query.minuteFilter.value;
+
+                                    var dataLength = dataItem.data.length;
+
+                                    var itemsToRemove = limitLength - (serverItem.data.length + dataLength);
+
+                                    if (itemsToRemove < 0)
+                                        serverItem.data.splice(0, -itemsToRemove);
+
+                                    serverItem.data = serverItem.data.concat(dataItem.data);
                                 } else {
                                     scope.serverData.items.push(dataItem);
                                 }

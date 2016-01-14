@@ -45,12 +45,17 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" ng-repeat="server in servers">
             <a aria-controls="s_{{server.id}}" role="tab" data-toggle="tab" ng-click="selectServer(server)">
-                <img ng-src="{{uiHelpers.getStatusImageSource(server)}}" class="m-status-img" />&nbsp;<span>{{server.machineName}}</span>
+                <img ng-src="{{uiHelpers.getStatusImageSource(server)}}" class="m-status-img"/>&nbsp;<span>{{server.machineName}}</span>
             </a>
         </li>
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active">
+            <div class="pull-right" ng-if="currentServer">
+                <label>For last</label>
+                <select class="form-control" ng-model="query.minuteFilter" ng-options="obj.text for obj in data.filterVarians track by obj.value">
+                </select> 
+            </div>
             <div class="row">
                 <ul class="list-unstyled cpu-info">
                     <li ng-repeat="cpu in currentServer.processors">
