@@ -51,10 +51,26 @@
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active">
-            <div class="pull-right" ng-if="currentServer">
-                <label>For last</label>
-                <select class="form-control" ng-model="query.minuteFilter" ng-options="obj.text for obj in data.filterVarians track by obj.value">
-                </select> 
+            <div class="row pull-right" ng-if="currentServer" style="margin-top: 2px;">
+                <div class="col-xs-12">
+                    <div class="panel-cell" style="padding: 0">
+                        <div class="dropdown filter" style="padding: 0">
+                            <a class="dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">Filter</a>
+                            <div class="dropdown-menu" role="dropdown" aria-labelledby="dropdownMenu" style="margin-top: -1px; width: 350px; padding: 0;margin-left: -277px;">
+                                <form method="GET">
+                                    <div class="pad-all_15" style="padding: 25px" id="userFilter">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label style="display: inline">Show data for last</label>
+                                                <select class="form-control" ng-model="query.minuteFilter" ng-options="obj.text for obj in data.filterVarians track by obj.value"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <ul class="list-unstyled cpu-info">

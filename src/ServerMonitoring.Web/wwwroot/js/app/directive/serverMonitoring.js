@@ -26,8 +26,10 @@
                 },
 
                 link: function (scope, element, attrs) {
+                    var defaultMinuteFilter = { text: '5 minutes', value: 5 };
+
                     scope.query = {
-                        minuteFilter: { text: '1 minutes', value: 60 }
+                        minuteFilter: defaultMinuteFilter
                     };
 
                     var options = {
@@ -61,7 +63,7 @@
                         for (var i = 0; i < minutes.length; i++) {
                             scope.data.filterVarians.push({
                                 text: minutes[i] + ' minute(s)',
-                                value: minutes[i] * 60
+                                value: minutes[i]
                             });
                         }
                     }();
@@ -117,8 +119,11 @@
                         if (scope.serverData)
                             scope.serverData.items = [];
 
-                        scope.query.sinceMinute = 60;
-                        scope.query.minuteFilter = { text: '1 minute', value: 60 };
+                        if (!scope.data.timerIntervals.refreshDataInterval)
+                            $interval.cancel(scope.data.timerIntervals.refreshDataInterval);
+
+                        scope.query.minuteFilter = defaultMinuteFilter;
+                        scope.query.sinceMinute = defaultMinuteFilter.value;
 
                         scope.refreshData();
                     };
@@ -158,6 +163,9 @@
                             scope.query.sinceDate = null;
                             scope.query.sinceMinute = newVal.value;
 
+                            if (scope.data.timerIntervals.refreshDataInterval)
+                                $interval.cancel(scope.data.timerIntervals.refreshDataInterval);
+
                             scope.refreshData();
                         }
                     });
@@ -165,6 +173,8 @@
                     scope.refreshData = function () {
                         if (!scope.currentServer)
                             return;
+
+                        scope.query.sinceDate = null;
 
                         var op = _monitoringService.pull(options.host, scope.query);
 
@@ -185,31 +195,6 @@
                             //save last data
                             scope.query.sinceDate = data.lastPush;
 
-                            var limitLength = scope.query.minuteFilter.value;
-
-                            var currentMinLength = scope.serverData.items.map(function (item) {
-                                if (!item.data)
-                                    return 0;
-                                return item.data.length;
-                            }).min();
-                            
-                            if (currentMinLength < limitLength) {
-                                if (scope.data.timerIntervals.refreshDataInterval)
-                                    $interval.cancel(scope.data.timerIntervals.refreshDataInterval);
-
-                                scope.query.sinceDate = null;
-                                scope.query.sinceMinute = scope.query.minuteFilter.value;
-
-                                var op = _monitoringService.pull(options.host, scope.query);
-                                op.success(function (data) {
-                                    scope.serverData = data;
-                                    scope.query.sinceDate = data.lastPush;
-                                    scope.data.timerIntervals.refreshDataInterval = $interval(scope.updateData, 1000);
-                                });
-
-                                return;
-                            }
-
                             data.items.forEach(function (dataItem) {
                                 var serverItem = scope.serverData.items.filter(function (sitem) {
                                     return dataItem.name == sitem.name;
@@ -221,6 +206,8 @@
                                     
                                     var dataLength = dataItem.data.length;
                                     
+                                    var limitLength = scope.query.minuteFilter.value * 60;
+
                                     var itemsToRemove = limitLength - (serverItem.data.length + dataLength);
 
                                     if (itemsToRemove < 0)
