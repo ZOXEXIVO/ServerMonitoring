@@ -53,7 +53,6 @@ namespace ServerMonitoring.Data.Storages.InMemory.Data
                 data = data.Where(x => x.Date >= nowWithoutMinute);
             }
 
-
             //by default - 5 minutes
             if (query.IsEmpty)
             {

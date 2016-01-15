@@ -2,6 +2,10 @@
     var module = angular.module('serverMonitoring', ['ngSanitize']);
 
     module.directive('serverMonitoring', ['_monitoringService', '_chartService', '$sce', '$interval', '$timeout', function (_monitoringService, _chartService, $sce, $interval, $timeout) {
+            Array.prototype.min = function() {
+                return Math.min.apply(Math, this);
+            };
+
             var getSafeHost = function (host) {
                 if (host.indexOf('/', host.length - 1) !== -1) {
                     return host.substr(0, host.length - 1);
@@ -181,6 +185,31 @@
                             //save last data
                             scope.query.sinceDate = data.lastPush;
 
+                            var limitLength = scope.query.minuteFilter.value;
+
+                            var currentMinLength = scope.serverData.items.map(function (item) {
+                                if (!item.data)
+                                    return 0;
+                                return item.data.length;
+                            }).min();
+                            
+                            if (currentMinLength < limitLength) {
+                                if (scope.data.timerIntervals.refreshDataInterval)
+                                    $interval.cancel(scope.data.timerIntervals.refreshDataInterval);
+
+                                scope.query.sinceDate = null;
+                                scope.query.sinceMinute = scope.query.minuteFilter.value;
+
+                                var op = _monitoringService.pull(options.host, scope.query);
+                                op.success(function (data) {
+                                    scope.serverData = data;
+                                    scope.query.sinceDate = data.lastPush;
+                                    scope.data.timerIntervals.refreshDataInterval = $interval(scope.updateData, 1000);
+                                });
+
+                                return;
+                            }
+
                             data.items.forEach(function (dataItem) {
                                 var serverItem = scope.serverData.items.filter(function (sitem) {
                                     return dataItem.name == sitem.name;
@@ -189,11 +218,9 @@
                                 if (serverItem) {
                                     serverItem.currentValue = dataItem.currentValue;
                                     serverItem.currentValueDisplay = dataItem.currentValueDisplay;
-
-                                    var limitLength = scope.query.minuteFilter.value;
-
+                                    
                                     var dataLength = dataItem.data.length;
-
+                                    
                                     var itemsToRemove = limitLength - (serverItem.data.length + dataLength);
 
                                     if (itemsToRemove < 0)

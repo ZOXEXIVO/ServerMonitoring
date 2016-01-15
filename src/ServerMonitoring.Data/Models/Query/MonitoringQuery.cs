@@ -30,6 +30,6 @@ namespace ServerMonitoring.Data.Models.Query
         /// </summary>
         public int? SinceMinute { get; set; }
 
-        public bool IsEmpty => !DateFrom.HasValue && !DateTo.HasValue && !SinceDate.HasValue && SinceMinute.HasValue;
+        public bool IsEmpty => !DateFrom.HasValue && !DateTo.HasValue && !SinceDate.HasValue && !SinceMinute.HasValue;
     }
 }
