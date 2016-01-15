@@ -23,7 +23,7 @@
 
                 link: function (scope, element, attrs) {
                     scope.query = {
-                        minuteFilter: { text: '5 minutes', value: 300 }
+                        minuteFilter: { text: '1 minutes', value: 60 }
                     };
 
                     var options = {
@@ -113,6 +113,9 @@
                         if (scope.serverData)
                             scope.serverData.items = [];
 
+                        scope.query.sinceMinute = 60;
+                        scope.query.minuteFilter = { text: '1 minute', value: 60 };
+
                         scope.refreshData();
                     };
 
@@ -161,9 +164,6 @@
 
                         var op = _monitoringService.pull(options.host, scope.query);
 
-                        //always clear
-                        scope.query.sinceMinute = null;
-
                         op.success(function (data) {
                             scope.serverData = data;
          
@@ -199,7 +199,9 @@
                                     if (itemsToRemove < 0)
                                         serverItem.data.splice(0, -itemsToRemove);
 
-                                    serverItem.data = serverItem.data.concat(dataItem.data);
+                                    dataItem.data.forEach(function(item) {
+                                        serverItem.data.push(item);
+                                    });
                                 } else {
                                     scope.serverData.items.push(dataItem);
                                 }
