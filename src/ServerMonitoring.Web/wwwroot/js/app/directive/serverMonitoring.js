@@ -125,7 +125,7 @@
                         scope.query.minuteFilter = defaultMinuteFilter;
                         scope.query.sinceMinute = defaultMinuteFilter.value;
 
-                        scope.refreshData();
+                        scope.initServerData();
                     };
 
 
@@ -166,11 +166,11 @@
                             if (scope.data.timerIntervals.refreshDataInterval)
                                 $interval.cancel(scope.data.timerIntervals.refreshDataInterval);
 
-                            scope.refreshData();
+                            scope.initServerData();
                         }
                     });
 
-                    scope.refreshData = function () {
+                    scope.initServerData = function () {
                         if (!scope.currentServer)
                             return;
 
