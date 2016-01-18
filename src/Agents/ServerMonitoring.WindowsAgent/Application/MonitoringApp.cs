@@ -30,7 +30,7 @@ namespace ServerMonitoring.WindowsAgent.Application
 
         private ServerInfo _serverInfo;
 
-        public MonitoringApp(string host)
+        public MonitoringApp(string host, string machineName)
         {
             _monitoringServices = new List<IMonitoringService>
             {
@@ -45,7 +45,7 @@ namespace ServerMonitoring.WindowsAgent.Application
             _outputService = new ConsoleOutputService();
             _cpuNameService = new WMICpuNameService();
 
-            InitServerInfo();
+            InitServerInfo(machineName);
         }
 
         public void Start()
@@ -97,12 +97,12 @@ namespace ServerMonitoring.WindowsAgent.Application
 
         public ServerInfo Server => _serverInfo;
 
-        private void InitServerInfo()
+        private void InitServerInfo(string machineName)
         {
             _serverInfo = new ServerInfo
             {
                 Id = _idService.GetCurrentComputerId(),
-                MachineName = Environment.MachineName,
+                MachineName = machineName ?? Environment.MachineName,
                 Processors = _cpuNameService.GetCPUNames()
             };
         }

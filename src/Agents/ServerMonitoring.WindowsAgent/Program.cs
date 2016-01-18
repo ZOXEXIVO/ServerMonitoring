@@ -7,30 +7,13 @@ namespace ServerMonitoring.WindowsAgent
     {
         static void Main(string[] args)
         {
-            string host;
-
-            if (args.Length == 0)
-            {
-                Console.WriteLine("monitoring host: ");
-                host = Console.ReadLine();
-            }
-            else
-            {
-                host = args[0];
-            }
-
-            if (string.IsNullOrWhiteSpace(host))
-            {
-                Console.WriteLine("host is missing");
-                Console.Read();
-
-                return;
-            }
-
+            string host = args[0]; 
+            string machineName = args[1];
+        
             if (!host.StartsWith("http://"))
                 host = "http://" + host;
 
-            new MonitoringApp(host).Start();
+            new MonitoringApp(host, machineName).Start();
         }
     }
 }
