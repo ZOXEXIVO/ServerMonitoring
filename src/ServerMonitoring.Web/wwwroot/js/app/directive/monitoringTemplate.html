@@ -74,7 +74,7 @@
             </div>
             <div class="row">
                 <ul class="list-unstyled cpu-info">
-                    <li ng-repeat="cpu in currentServer.processors">
+                    <li ng-repeat="cpu in currentServer.processors track by $index">
                         <h4>{{cpu}}</h4>
                     </li>
                 </ul>
