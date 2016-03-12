@@ -29,11 +29,9 @@ namespace ServerMonitoring.Web
                 var jsonFormatter = new JsonFormatter();
 
                 options.InputFormatters.Clear();
-                options.InputFormatters.RemoveType<JsonInputFormatter>();
                 options.InputFormatters.Add(jsonFormatter);
 
                 options.OutputFormatters.Clear();
-                options.OutputFormatters.RemoveType<JsonOutputFormatter>();
                 options.OutputFormatters.Add(jsonFormatter);
 
                 options.Filters.Add(new ExceptionFilter());
