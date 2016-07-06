@@ -23,6 +23,7 @@ namespace ServerMonitoring.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.RegisterInternalServices();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

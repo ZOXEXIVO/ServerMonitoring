@@ -9,7 +9,7 @@ namespace ServerMonitoring.Web
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://zoxexivo.com:5000")
+                .UseUrls("http://localhost:5000", "http://zoxexivo.com:5000")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .Build();
