@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Mvc.Formatters;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ServerMonitoring.Web.Application.Filters;
-using ServerMonitoring.Web.Application.Formatters;
 
 namespace ServerMonitoring.Web
 {
@@ -14,39 +11,28 @@ namespace ServerMonitoring.Web
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-
             Configuration = builder.Build();
         }
 
-        public IConfigurationRoot Configuration { get; set; }
-     
+        public IConfigurationRoot Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options =>
-            {
-                var jsonFormatter = new JsonFormatter();
-
-                options.InputFormatters.Clear();
-                options.InputFormatters.Add(jsonFormatter);
-
-                options.OutputFormatters.Clear();
-                options.OutputFormatters.Add(jsonFormatter);
-
-                options.Filters.Add(new ExceptionFilter());
-            });
-
-            services.RegisterInternalServices();
+            services.AddMvc();
         }
-     
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseIISPlatformHandler();
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+            
+            app.UseStaticFiles();
 
             app.UseCors();
-
-            app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {
@@ -55,7 +41,5 @@ namespace ServerMonitoring.Web
                     template: "{controller=Startup}/{action=Index}/{id?}");
             });
         }
-
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ServerMonitoring.Data.Models;
 using ServerMonitoring.Data.Models.Query;
 using ServerMonitoring.Data.Storages;

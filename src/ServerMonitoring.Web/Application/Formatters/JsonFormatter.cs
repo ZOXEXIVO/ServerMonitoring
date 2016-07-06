@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 

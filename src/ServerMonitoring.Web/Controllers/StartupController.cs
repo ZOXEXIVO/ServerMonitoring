@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNet.Http.Extensions;
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ServerMonitoring.Web.Controllers
 {

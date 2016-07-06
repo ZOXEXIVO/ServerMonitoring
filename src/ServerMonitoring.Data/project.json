@@ -1,20 +1,16 @@
 {
   "version": "1.0.0-*",
-  "description": "ServerMonitoring.Data Class Library",
-  "authors": [ "ZOXEXIVO" ],
-  "tags": [ "" ],
-  "projectUrl": "https://github.com/ZOXEXIVO/WindowsServerMonitoring",
-  "licenseUrl": "",
-  "frameworks": {
-    "dnxcore50": { }
-  },
+
   "dependencies": {
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
-    "System.Collections.Concurrent": "4.0.11-beta-23516",
-    "System.Linq": "4.0.1-beta-23516",
-    "System.Runtime": "4.0.21-beta-23516",
-    "System.Runtime.InteropServices": "4.0.21-beta-23516",
-    "System.Threading.Tasks": "4.0.11-beta-23516",
-    "Newtonsoft.Json": "8.0.2"
+    "NETStandard.Library": "1.6.0",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0",
+    "Newtonsoft.Json": "9.0.1"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "dnxcore50"
+    }
   }
 }
+
